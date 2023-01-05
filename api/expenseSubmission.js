@@ -16,7 +16,7 @@ export default async (request, response) => {
     };
 
     try {
-      const res = await fetch(`${process.env.SHEETDB_URL}`, {
+      const sheetDBReq = fetch(`${process.env.SHEETDB_URL}`, {
         method: 'POST',
         headers: {
           Accept: 'application/json',
@@ -27,25 +27,39 @@ export default async (request, response) => {
           sheet: 'Ledger',
         }),
       });
-      const data = await res.json();
+      // const data = await res.json();
 
-      await fetch('https://okvzazvzpoxaztttoshl.supabase.co/rest/v1/2023', {
-        method: 'POST',
-        headers: {
-          apikey: `${process.env.SUPABASE_KEY}`,
-          Authorization: `Bearer ${process.env.SUPABASE_KEY}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          Expense: request.body.expense,
-          Amount: request.body.amount,
-          Category: request.body.category,
-        }),
-      });
+      const supabaseReq = fetch(
+        'https://okvzazvzpoxaztttoshl.supabase.co/rest/v1/2023',
+        {
+          method: 'POST',
+          headers: {
+            apikey: `${process.env.SUPABASE_KEY}`,
+            Authorization: `Bearer ${process.env.SUPABASE_KEY}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            Expense: request.body.expense,
+            Amount: request.body.amount,
+            Category: request.body.category,
+          }),
+        }
+      );
 
-      response.status(201).json({
-        responses: [data],
-      });
+      const [sheetDBRes, supabaseRes] = await Promise.allSettled([
+        sheetDBReq,
+        supabaseReq,
+      ]);
+      if (
+        sheetDBRes.status === 'fulfilled' &&
+        supabaseRes.status === 'fulfilled'
+      ) {
+        const data = await sheetDBRes.value.json();
+        response.status(201).json(data);
+      } else {
+        const data = await sheetDBRes.value.json();
+        response.status(400).json(data);
+      }
     } catch (err) {
       response.status(400).json(err);
     }

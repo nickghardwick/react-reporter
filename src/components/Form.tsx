@@ -1,4 +1,4 @@
-import { Box, Button, Group, Select, TextInput } from '@mantine/core';
+import { Box, Button, Group, NativeSelect, TextInput } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { showNotification } from '@mantine/notifications';
 import { useState } from 'react';
@@ -74,11 +74,10 @@ const Form = () => {
           {...form.getInputProps('amount')}
         />
 
-        <Select
+        <NativeSelect
           searchable
           required
           label='Category'
-          placeholder='Choose'
           data={[
             'Coffee',
             'Eating Out',
