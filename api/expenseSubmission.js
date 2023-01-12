@@ -12,7 +12,7 @@ export default async (request, response) => {
         .format('MM/DD/YYYYTHH:mm:ss'),
       Expense: request.body.expense,
       Amount: request.body.amount,
-      Category: request.body.category,
+      Category: request.body.category === '' ? 'Coffee' : request.body.category,
     };
 
     try {
