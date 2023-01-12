@@ -80,7 +80,6 @@ const Form = () => {
           variant='filled'
           data={[
             'Coffee',
-            'Coffee',
             'Eating Out',
             'Flights',
             'Gas',
