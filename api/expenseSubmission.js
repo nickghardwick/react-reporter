@@ -27,7 +27,6 @@ export default async (request, response) => {
           sheet: 'Ledger',
         }),
       });
-      // const data = await res.json();
 
       const supabaseReq = fetch(
         'https://okvzazvzpoxaztttoshl.supabase.co/rest/v1/2023',

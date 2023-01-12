@@ -75,7 +75,6 @@ const Form = () => {
         />
 
         <NativeSelect
-          searchable
           required
           label='Category'
           data={[
