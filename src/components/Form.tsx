@@ -77,7 +77,9 @@ const Form = () => {
         <NativeSelect
           required
           label='Category'
+          variant='filled'
           data={[
+            'Coffee',
             'Coffee',
             'Eating Out',
             'Flights',
