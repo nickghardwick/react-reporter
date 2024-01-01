@@ -28,31 +28,8 @@ export default async (request, response) => {
         }),
       });
 
-      const supabaseReq = fetch(
-        'https://okvzazvzpoxaztttoshl.supabase.co/rest/v1/2023',
-        {
-          method: 'POST',
-          headers: {
-            apikey: `${process.env.SUPABASE_KEY}`,
-            Authorization: `Bearer ${process.env.SUPABASE_KEY}`,
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            Expense: request.body.expense,
-            Amount: request.body.amount,
-            Category: request.body.category,
-          }),
-        }
-      );
-
-      const [sheetDBRes, supabaseRes] = await Promise.allSettled([
-        sheetDBReq,
-        supabaseReq,
-      ]);
-      if (
-        sheetDBRes.status === 'fulfilled' &&
-        supabaseRes.status === 'fulfilled'
-      ) {
+      const [sheetDBRes] = await Promise.allSettled([sheetDBReq]);
+      if (sheetDBRes.status === 'fulfilled') {
         const data = await sheetDBRes.value.json();
         response.status(201).json(data);
       } else {
